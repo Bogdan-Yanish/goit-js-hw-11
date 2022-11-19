@@ -4,24 +4,40 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Homework 10</title>
+    <title>Image from PIXABAY</title>
+    <link rel="stylesheet" href="./scss/main.css" />
   </head>
   <body>
-    <form class="search-form" id="search-form">
-      <input
-        type="text"
-        name="searchQuery"
-        autocomplete="off"
-        placeholder="Search images..."
-      />
-      <button type="submit">Search</button>
-    </form>
+    <header class="header">
+      <form class="search-form" id="search-form">
+        <div class="input-group">
+          <label>
+            <input
+              type="text"
+              name="searchQuery"
+              autocomplete="off"
+              placeholder="Search images..."
+            />
+          </label>
+          <button class="btn unit" type="submit">
+            <svg class="search-icon" width="26" height="28">
+              <use href="./image/search.svg#search-icon"></use>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </header>
+    
+    <main>
+      <section>
+        <div class="gallery">
+         <!-- Img cards -->
+        </div>
+      </section>
 
-    <div class="gallery">
-      <p>GALLERY</p>
-      <!-- Картки зображень -->
-    </div>
+      <button type="button" class="btn load-more is-hidden">Load more</button>
+    </main>
 
-    <script src="index.js" type="module"></script>
+    <script src="./js/index.js" type="module"></script>
   </body>
 </html>
