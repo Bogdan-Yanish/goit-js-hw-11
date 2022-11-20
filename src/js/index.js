@@ -62,7 +62,7 @@ async function getImg() {
   } 
     
   showListImg(hits);
-  // smoothScroll();
+  smoothScroll();
     
   isShow += hits.length;
   if (isShow < totalHits) {
