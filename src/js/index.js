@@ -23,35 +23,10 @@ async function onSearch(event) {
     Notify.info('Please, enter search info');
     return;
   }
-
-  refs.galleryWrap.innerHTML = '';
-  gallery.resetPage();
+  isShow = 0;
+  resetPage();
   getImg();
-
-  const response = await gallery.getImg();
-  const { hits, totalHits } = response;
-
-  if (hits.length > 0) {
-      Notify.success(`Hooray! We found ${totalHits} images`);
-    }
-}
-
-function onLoadMore() {
-
-  try {
-    gallery.incrementPage();
-    Loading.arrows();
-    getImg();
-    Loading.remove();
-  } catch (error) {
-    Notify.failure('Error')
-    gallery.resetPage();
-  }  
-}
-
-async function getImg() {
-  refs.loadMoreBtn.classList.add('is-hidden');
-
+    
   const response = await gallery.getImg();
   const { hits, totalHits } = response;
 
@@ -60,9 +35,27 @@ async function getImg() {
     'Sorry, there are no images matching your search query. Please try again.'
     );
   } 
-    
+
+  if (hits.length > 0) {
+      Notify.success(`Hooray! We found ${totalHits} images`);
+    }
+}
+
+function onLoadMore() {
+  gallery.incrementPage();
+  Loading.arrows();
+  getImg();
+  Loading.remove();
+}
+
+async function getImg() {
+  refs.loadMoreBtn.classList.add('is-hidden');
+
+  const response = await gallery.getImg();
+  const { hits, totalHits } = response;
+
   showListImg(hits);
-  smoothScroll();
+  // smoothScroll();
     
   isShow += hits.length;
   if (isShow < totalHits) {
@@ -70,13 +63,16 @@ async function getImg() {
   }; 
   
   if (isShow > totalHits) {
-    Notify.info(
+    Notify.success(
       'We re sorry, but you have reached the end of search results.'
     );
   }
 }
 
-
+function resetPage() {
+  refs.galleryWrap.innerHTML = '';
+  gallery.resetPage();
+}
 
 
   
