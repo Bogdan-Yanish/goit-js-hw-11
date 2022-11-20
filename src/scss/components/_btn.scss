@@ -1,17 +1,16 @@
 .btn {
   border: 0;
   outline: 0;
-  font-size: $ruler;
-  border-radius: $ruler * 20;
-  // padding: $ruler;
+  font-size: $font;
+  border-radius: 320px;
   background-color: $color-bg;
   text-shadow: 1px 1px 0 $color-white;
 
   letter-spacing: -0.2px;
-  //
+  
   color: #61677c;
   font-weight: bold;
-  box-shadow: -5px -5px 20px $color-white, 5px 5px 20px $color-shadow;
+  // box-shadow: -5px -5px 20px $color-white, 5px 5px 20px $color-shadow;
   transition: all 0.3s ease-in-out;
   font-weight: 600;
 
@@ -37,10 +36,8 @@
   }
 }
 
-// lOAD MORE
-
 .load-more {
   display: flex;
   margin: 10px auto;
-  padding: $ruler;
+  padding: 16px;
 }

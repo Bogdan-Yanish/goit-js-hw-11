@@ -1,4 +1,5 @@
 import '../scss/main.css';
+// import '../css/styles.css';
 import { Notify } from 'notiflix';
 import { Loading } from 'notiflix';
 import { lightbox } from './simple_lightbox';
@@ -18,6 +19,7 @@ const gallery = new API();
 
 refs.searchForm.addEventListener('submit', onSearch);
 refs.loadMoreBtn.addEventListener('click', onLoadMore);
+// window.addEventListener('scroll', onInfiniteScroll);
 
 async function onSearch(event) {
   event.preventDefault();
@@ -31,48 +33,70 @@ async function onSearch(event) {
   }
   refs.galleryWrap.innerHTML = '';
   gallery.resetPage();
+
+  refs.loadMoreBtn.classList.add('is-hidden');
   
   const response = await gallery.getImg();
-  const { hits, totalHits, total } = response;
+  const { hits, totalHits } = response;
 
   if (!hits.length) {
     Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
+    refs.loadMoreBtn.classList.add('is-hidden');
   } else {
     Notify.success(`Hooray! We found ${totalHits} images`);
   }
-
+  
   showListImg(hits);
   smoothScroll();
-
-  if (isShow < total) {
-    refs.loadMoreBtn.classList.remove('is-hidden');
-  }
 }
 
 async function onLoadMore() {
+  refs.loadMoreBtn.classList.remove('is-hidden');
   gallery.incrementPage();
-  refs.loadMoreBtn.classList.add('is-hidden');
-
-  const response = await gallery.getImg();
-  const { hits, total} = response;
-
-  showListImg(hits);
-  smoothScroll();
-
-  isShow += hits.length;
-
-  if (isShow >= total) {
+  if (isShow >= totalHits) {
     Notify.info(
       'We re sorry, but you have reached the end of search results.'
     );
   }
+  refs.loadMoreBtn.classList.add('is-hidden');
 
-  if (isShow < total) {
-    refs.loadMoreBtn.classList.remove('is-hidden');
-  }
+  const response = await gallery.getImg();
+  const { hits, totalHits} = response;
+  
+  Loading.pulse();
+  showListImg(hits);
+  smoothScroll();
+  Loading.remove();
+
+  // isShow += hits.length;
 }
+
+// window.addEventListener('scroll',()=>{
+//   console.log("scrolled", window.scrollY) //scrolled from top
+//   console.log(window.innerHeight) //visible part of screen
+//   if(window.scrollY + window.innerHeight >= document.documentElement.scrollHeight){
+//       onLoadMore();
+//   }
+// })
+
+// async function onInfiniteScroll() {
+//   console.log("scrolled", window.scrollY) //scrolled from top
+//   console.log(window.innerHeight) //visible part of screen
+//   if(window.scrollY + window.innerHeight >= document.documentElement.scrollHeight){
+//     const response = await gallery.getImg();
+//     const { hits } = response;
+    
+//     isShow += hits.length;
+//     // Loading.pulse();
+//     showListImg(hits);
+//     // smoothScroll();
+//     // Loading.remove();
+      
+//     // onLoadMore();
+//   }
+// }
 
 function showListImg(img) {
   const markup = img
