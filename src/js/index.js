@@ -25,10 +25,18 @@ async function onSearch(event) {
   }
   isShow = 0;
   resetPage();
-  getImg();
-    
+  
+  refs.loadMoreBtn.classList.add('is-hidden');
+
   const response = await gallery.getImg();
   const { hits, totalHits } = response;
+
+  showListImg(hits);
+
+  isShow += hits.length;
+  if (isShow < totalHits) {
+    refs.loadMoreBtn.classList.remove('is-hidden');
+  }; 
 
   if (!hits.length) {
     Notify.failure(
@@ -41,21 +49,16 @@ async function onSearch(event) {
     }
 }
 
-function onLoadMore() {
+async function onLoadMore() {
   gallery.incrementPage();
   Loading.arrows();
-  getImg();
-  Loading.remove();
-}
-
-async function getImg() {
   refs.loadMoreBtn.classList.add('is-hidden');
 
   const response = await gallery.getImg();
   const { hits, totalHits } = response;
 
   showListImg(hits);
-  // smoothScroll();
+  smoothScroll();
     
   isShow += hits.length;
   if (isShow < totalHits) {
@@ -67,6 +70,7 @@ async function getImg() {
       'We re sorry, but you have reached the end of search results.'
     );
   }
+  Loading.remove();
 }
 
 function resetPage() {
